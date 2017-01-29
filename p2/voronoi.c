@@ -20,8 +20,9 @@ double pointTwoY = 0;
 double pointThreeX = 0;
 double pointThreeY = 0;
 
-// Controls the dimensions of the image.
-int DIMENSIONS = 100;
+// Controls the parameters.
+#define DIMENSIONS 100
+#define COORDINATES 6
 
 // Prototyping functions used.
 bool nearestPoint( int, int, double, double );
@@ -41,9 +42,10 @@ int main( ) {
     statement will make sure six are read in, and gives an
     error message if not.
   */
-  int count = scanf( "%lf%lf%lf%lf%lf%lf", &pointOneX, &pointOneY, &pointTwoX, &pointTwoY, &pointThreeX, &pointThreeY );
+  int count = scanf( "%lf%lf%lf%lf%lf%lf", &pointOneX, &pointOneY, &pointTwoX
+                                         , &pointTwoY, &pointThreeX, &pointThreeY );
 
-  if ( count != 6 ) {
+  if ( count != COORDINATES ) {
     printf("Invalid input\n");
     return 100;
   }
@@ -123,7 +125,7 @@ bool nearestPoint( int col, int row, double x, double y ) {
   it is painted white.
 
   @param col The column of the current pixel.
-  @param row The row of the current pixel. 
+  @param row The row of the current pixel.
 */
 void chooseColor( int col, int row ) {
 
