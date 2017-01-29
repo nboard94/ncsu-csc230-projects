@@ -71,7 +71,7 @@ void showTag()
   // Parses through the rest of the tag until '>'
   while ( ( c = getchar() ) != '>' ) {
 
-    // If the EOF is reached before the end of the tag, error is reported.  
+    // If the EOF is reached before the end of the tag, error is reported. 
     if ( c == -1 ) {
        printf( "%s", BLACK );
        exit( UNSUCCESSFUL_TAG_EXIT );
@@ -104,7 +104,7 @@ void showEntity()
   // Parses through the rest of the tag until ';'
   while ( ( c = getchar() ) != ';' ) {
 
-    // If the EOF is reached before the end of the entity, error is reported. 
+    // If the EOF is reached before the end of the entity, error is reported.
     if ( c == -1 ) {
        printf( "%s", BLACK );
        exit( UNSUCCESSFUL_ENTITY_EXIT );
