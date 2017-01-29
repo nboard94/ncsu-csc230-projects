@@ -4,17 +4,19 @@
 #define RED "\x1B[31m"
 #define BLUE "\x1B[34m"
 #define BLACK "\x1B[0m"
+#define UNSUCCESSFUL_TAG_EXIT 101
+#define UNSUCCESSFUL_ENTITY_EXIT 100
 
 void showTag();
 void showEntity();
 
-int main () 
+int main ()
 {
 
   int c;
 
-  while( ( c = getchar() ) != EOF ) {
-    if( c == '<' )
+  while( ( c = getchar() ) != EOF ){
+    if ( c == '<' )
     {
       showTag();
     }
@@ -31,7 +33,7 @@ int main ()
   return 0;
 }
 
-void showTag() 
+void showTag()
 {
   int c;
 
@@ -39,11 +41,11 @@ void showTag()
 
   putchar( '<' );
 
-  while( ( c = getchar() ) != '>' ) {
+  while ( ( c = getchar() ) != '>' ) {
 
     if ( c == -1 ) {
        printf( "%s", BLACK );
-       exit( 101 );
+       exit( UNSUCCESSFUL_TAG_EXIT );
     }
 
     putchar( c );
@@ -62,11 +64,11 @@ void showEntity()
 
   putchar( '&' );
 
-  while( ( c = getchar() ) != ';' ) {
+  while ( ( c = getchar() ) != ';' ) {
 
     if ( c == -1 ) {
        printf( "%s", BLACK );
-       exit( 100 );
+       exit( UNSUCCESSFUL_ENTITY_EXIT );
     }
 
     putchar( c );
