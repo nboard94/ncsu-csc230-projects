@@ -35,7 +35,8 @@ double getDistance( double, double, double, double );
 
   @return program exit status
 */
-int main( ) {
+int main( )
+{
 
   /**
     Takes in the coordinates.  The int count keeps track
@@ -82,7 +83,8 @@ int main( ) {
   @return 1 if the given point is closest to the given pixel.
   @return 0 if the given point is not the closest to the given pixel.
 */
-bool nearestPoint( int col, int row, double x, double y ) {
+bool nearestPoint( int col, int row, double x, double y )
+{
 
   //test for white point
   int testX = round( x );
@@ -128,7 +130,8 @@ bool nearestPoint( int col, int row, double x, double y ) {
   @param col The column of the current pixel.
   @param row The row of the current pixel.
 */
-void chooseColor( int col, int row ) {
+void chooseColor( int col, int row )
+{
 
   // Paints the pixel red if it is closest to the first point.
   if ( nearestPoint( col, row, pointOneX, pointOneY ) == 1 ) {
@@ -156,6 +159,7 @@ void chooseColor( int col, int row ) {
   @param x2 The x coordinate of the second point.
   @param y2 The x coordinate of the second point.
 */
-double getDistance( double x1, double y1, double x2, double y2) {
+double getDistance( double x1, double y1, double x2, double y2)
+{
   return sqrt( ( ( x1 - x2 ) * ( x1 - x2 ) ) + ( ( y1 - y2 ) * ( y1 - y2 ) ) );
 }
