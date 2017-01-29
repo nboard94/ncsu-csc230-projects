@@ -3,7 +3,7 @@
   @file Nicholas Board (ndboard)
 
   This program takes in three points through commandline and
-  creates a voronoi diagram based off of them.  It pixel in the 
+  creates a voronoi diagram based off of them.  It pixel in the
   image is painted a different color based off of which of the
   three input points is closest.
 */
@@ -35,8 +35,8 @@ double getDistance( double, double, double, double );
 */
 int main( ) {
 
-  /**  
-    Takes in the coordinates.  The int count keeps track 
+  /**
+    Takes in the coordinates.  The int count keeps track
     of the amount of doubles successfully read in.  The if
     statement will make sure six are read in, and gives an
     error message if not.
@@ -56,7 +56,7 @@ int main( ) {
     on eaach pixel and switches printing to a new line
     after every DIMENSIONS amount.
   */
-  for( int i = 0; i < DIMENSIONS; i++ ) {
+  for ( int i = 0; i < DIMENSIONS; i++ ) {
     for ( int j = 0; j < DIMENSIONS; j++ ) {
 
       chooseColor( j, i );
@@ -123,23 +123,23 @@ bool nearestPoint( int col, int row, double x, double y ) {
   it is painted white.
 
   @param col The column of the current pixel.
-  @param row The row of the current pixel.  
+  @param row The row of the current pixel. 
 */
 void chooseColor( int col, int row ) {
 
-  // Paints the pixel red if it is closest to the first point. 
-  if( nearestPoint( col, row, pointOneX, pointOneY ) == 1 ) {
+  // Paints the pixel red if it is closest to the first point.
+  if ( nearestPoint( col, row, pointOneX, pointOneY ) == 1 ) {
     printf( "255   0   0 " );
   }
-  // Paints the pixel green if it is closest to the second point. 
-  else if( nearestPoint( col, row,  pointTwoX, pointTwoY ) == 1) {
+  // Paints the pixel green if it is closest to the second point.
+  else if ( nearestPoint( col, row,  pointTwoX, pointTwoY ) == 1) {
     printf( "  0 255   0 " );
   }
-  // Paints the pixel blue if it is closest to the third point. 
-  else if( nearestPoint( col, row, pointThreeX, pointThreeY ) == 1) {
+  // Paints the pixel blue if it is closest to the third point.
+  else if ( nearestPoint( col, row, pointThreeX, pointThreeY ) == 1) {
     printf( "  0   0 255 " );
   }
-  // Paints the pixel white if it is a given point. 
+  // Paints the pixel white if it is a given point.
   else {
     printf( "255 255 255 " );
   }
