@@ -43,7 +43,8 @@ int main( ) {
     statement will make sure six are read in, and gives an
     error message if not.
   */
-  int count = scanf( "%lf%lf%lf%lf%lf%lf", &pointOneX, &pointOneY, &pointTwoX, &pointTwoY, &pointThreeX, &pointThreeY );
+  int count = scanf( "%lf%lf%lf", &pointOneX, &pointOneY, &pointTwoX );
+  count += scanf( "%lf%lf%lf", &pointTwoY, &pointThreeX, &pointThreeY );
 
   if ( count != COORDINATES ) {
     printf("Invalid input\n");
