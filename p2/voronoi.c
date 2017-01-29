@@ -23,6 +23,7 @@ double pointThreeY = 0;
 // Controls the parameters.
 #define DIMENSIONS 100
 #define COORDINATES 6
+#define INVALID_INPUT_EXIT 100
 
 // Prototyping functions used.
 bool nearestPoint( int, int, double, double );
@@ -42,12 +43,12 @@ int main( ) {
     statement will make sure six are read in, and gives an
     error message if not.
   */
-  int count = scanf( "%lf%lf%lf%lf%lf%lf", &pointOneX, &pointOneY, &pointTwoX
-                                         , &pointTwoY, &pointThreeX, &pointThreeY );
+  int count = scanf( "%lf%lf%lf%lf%lf%lf", &pointOneX, &pointOneY, &pointTwoX );
+  int count = scanf( "%lf%lf%lf%lf%lf%lf", &pointTwoY, &pointThreeX, &pointThreeY );
 
   if ( count != COORDINATES ) {
     printf("Invalid input\n");
-    return 100;
+    return INVALID_INPUT_EXIT;
   }
 
   // Prints the header information for the .ppm filetype.
