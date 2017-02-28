@@ -20,7 +20,7 @@
     @param cols The number of columns in the grid.
     @param grid The grid to write the word to.
 */
-void writeHorizontal( int rpos, int cpos, char *word, 
+void writeHorizontal( int rpos, int cpos, char *word,
                       int rows, int cols, char grid[ rows ][ cols ] )
 {
   for ( int i = 0; word[i]; i++ ) {

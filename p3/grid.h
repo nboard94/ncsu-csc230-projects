@@ -30,7 +30,7 @@ void writeHorizontal( int rpos, int cpos, char word[],
     @param cols The number of columns in the grid.
     @param grid The grid to write the word to.
 */
-void writeVertical( int rpos, int cpos, char word[], 
+void writeVertical( int rpos, int cpos, char word[],
                     int rows, int cols, char grid[ rows ][ cols ] );
 
 /**
