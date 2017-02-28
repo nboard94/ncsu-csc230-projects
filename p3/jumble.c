@@ -1,4 +1,4 @@
-/** 
+/**
     @file jumble.c
     @author Nicholas Board (ndboard)
 
@@ -27,7 +27,7 @@ void readWords( char const * );
 bool getLetters( char * );
 bool matches( char const *, char const * );
 
-/** 
+/**
     Starts the program.  Makes sure that the proper file can be opened,
     passes it to readWords to populate words.  Then constantly calls
     getLetters until EOF is reached.
@@ -43,7 +43,7 @@ int main(  int argc, char *argv[]  )
   
   // Check to make sure the number of command line arguments is one.
   // If not, print error message and return 1.
-  if( argc != 2 ) {
+  if ( argc != 2 ) {
     fprintf( stderr, "usage: jumble <word-file>\n" );
     return 1;
   }
@@ -65,17 +65,17 @@ int main(  int argc, char *argv[]  )
   // than 20 characters, and consists only of lowercases.
   int countCheck = 0;
   int currentLen = 0;
-  for( int i = 0; i < wordCount; i++ ) {
-    
+  for ( int i = 0; i < wordCount; i++ ) {
+
     currentLen = strlen( words[i] );
-    if( currentLen > MAX_WORD_LENGTH ) {
+    if ( currentLen > MAX_WORD_LENGTH ) {
       fprintf( stderr, "Invalid word file\n" );
       return 1;
     }
     
-    for( int j = 0; words[i][j]; j++ ) {
-      
-      if( words[i][j] < 'a' || words[i][j] > 'z' ) {
+    for ( int j = 0; words[i][j]; j++ ) {
+
+      if ( words[i][j] < 'a' || words[i][j] > 'z' ) {
         fprintf( stderr, "Invalid word file\n" );
         return 1;
       }
@@ -85,25 +85,25 @@ int main(  int argc, char *argv[]  )
   }
   
   // Make sure that we haven't exceeded the max amount of words.
-  if( wordCount > MAX_WORDS ) {
+  if ( wordCount > MAX_WORDS ) {
     fprintf( stderr, "Invalid word file\n" );
     return 1;
   }
   
   //Make sure that wordCount is correct.
-  if( wordCount != countCheck ) {
+  if ( wordCount != countCheck ) {
     fprintf( stderr, "Invalid word file\n" );
     return 1;
   }
   
   //Call getLetters until EOF is reached.
-  while( getLetters( letters ) == 0);
+  while ( getLetters( letters ) == 0);
   
   // Exit successfully.
   return 0;
 }
 
-/** 
+/**
     Reads words from the input file and fills the global
     words array.
 
@@ -116,7 +116,7 @@ void readWords( char const *filename )
   
   // Populate the words array, increment wordCount.
   while ( fscanf( inputFile, "%21s", words[wordCount] ) == 1 ) {
-    
+ 
     wordCount++;
   }
   
@@ -124,7 +124,7 @@ void readWords( char const *filename )
   fclose( inputFile );
 }
 
-/** 
+/**
     Prompts the user for input and will fill the letters array.
     Makes sure the number of letters does not exceed 20, and are
     all lowercase.  Then calls the matches function and loops
@@ -140,7 +140,7 @@ bool getLetters( char *letters )
 
   // Will loop continuously.
   bool isValid;
-  while( true ) {
+  while ( true ) {
 
     // Reset isValid, and prompts the user.
     isValid = true;
@@ -149,11 +149,11 @@ bool getLetters( char *letters )
     // Populates the letters array with, at most, 21
     // characters.  Also checks to see if EOF is the
     // first character entered.
-    if( isValid && scanf( "%21s", letters ) != 1 ) {
+    if ( isValid && scanf( "%21s", letters ) != 1 ) {
     
-      if( getchar() == EOF )
+      if ( getchar() == EOF )
         return 1;
-    
+
       printf( "Invalid letters\n" );
       isValid = false;
     }
@@ -161,8 +161,8 @@ bool getLetters( char *letters )
     // Check to make sure the letters array does not
     // exceed our maximum amount of letters.
     int len = strlen( letters );
-    if( isValid && ( len > MAX_WORD_LENGTH || len <= 0 ) ) {
-      
+    if ( isValid && ( len > MAX_WORD_LENGTH || len <= 0 ) ) {
+
       printf( "Invalid letters\n" );
       isValid = false;
     }
@@ -170,16 +170,16 @@ bool getLetters( char *letters )
     // Make sure that every character in letters is
     // either EOF, at which point we break out of the
     // function, or a lowercase letter.
-    for( int i = 0; letters[i]; i++ ) {
+    for ( int i = 0; letters[i]; i++ ) {
 
-      if( letters[i] == EOF )
+      if ( letters[i] == EOF )
         return 1;
 
-      if( isValid && ( letters[i] < 'a' || letters[i] > 'z' ) ) {
+      if ( isValid && ( letters[i] < 'a' || letters[i] > 'z' ) ) {
 
         printf( "Invalid letters\n" );
         isValid = false;
-      } 
+      }
     }
 
     // If we have a valid string of letters, we compare
