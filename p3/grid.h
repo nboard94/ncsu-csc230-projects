@@ -1,4 +1,4 @@
-/** 
+/**
     @file grid.h
     @author Nicholas Board (ndboard)
 
@@ -7,7 +7,7 @@
 */
 
 
-/** 
+/**
     Writes the the board horizontally.
 
     @param rpos The row position of the word to write.
@@ -17,9 +17,10 @@
     @param cols The number of columns in the grid.
     @param grid The grid to write the word to.
 */
-void writeHorizontal( int rpos, int cpos, char word[], int rows, int cols, char grid[ rows ][ cols ] );
+void writeHorizontal( int rpos, int cpos, char word[],
+                      int rows, int cols, char grid[ rows ][ cols ] );
 
-/** 
+/**
     Writes the the board vertically.
 
     @param rpos The row position of the word to write.
@@ -29,9 +30,10 @@ void writeHorizontal( int rpos, int cpos, char word[], int rows, int cols, char 
     @param cols The number of columns in the grid.
     @param grid The grid to write the word to.
 */
-void writeVertical( int rpos, int cpos, char word[], int rows, int cols, char grid[ rows ][ cols ] );
+void writeVertical( int rpos, int cpos, char word[], 
+                    int rows, int cols, char grid[ rows ][ cols ] );
 
-/** 
+/**
     Prints the grid to standard output.
 
     @param rows The number of rows in the grid.

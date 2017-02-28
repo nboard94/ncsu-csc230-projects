@@ -116,7 +116,7 @@ void readWords( char const *filename )
   
   // Populate the words array, increment wordCount.
   while ( fscanf( inputFile, "%21s", words[wordCount] ) == 1 ) {
- 
+
     wordCount++;
   }
   
@@ -184,13 +184,13 @@ bool getLetters( char *letters )
 
     // If we have a valid string of letters, we compare
     // it to every word in words, reporting matches.
-    if( isValid ) {
+    if ( isValid ) {
 
-      for( int i = 0; i < wordCount; i++ ) {
+      for ( int i = 0; i < wordCount; i++ ) {
 
-        if( matches( words[i], letters ) ) {
+        if ( matches( words[i], letters ) ) {
 
-          printf( "%s\n", words[i] ); 
+          printf( "%s\n", words[i] );
         }
       }
     }
@@ -200,7 +200,7 @@ bool getLetters( char *letters )
   return 0;
 }
 
-/** 
+/**
     Checks to see if the given set of letters matches, or is
     an anagram of, the given word.
 
@@ -215,15 +215,15 @@ bool matches( char const *word, char const *letters )
   int len1 = strlen( word );
   int len2 = strlen( letters );
   
-  if( len1 != len2 )
+  if ( len1 != len2 )
     return 0;
-  
+
   // Declare two bool arrays that will be used for checking,
   // and set every value to false.
   bool matchW[len1];
   bool matchL[len2];
   
-  for( int i = 0; i < len1; i++ ) {
+  for ( int i = 0; i < len1; i++ ) {
     matchW[i] = false;
     matchL[i] = false;
   }
@@ -232,12 +232,12 @@ bool matches( char const *word, char const *letters )
   // in letters, and check to make sure that letter hasn't been used yet.
   // If two unused letters are matched, their corresponding values
   // in the match arrays are set to true.
-  for( int i = 0; word[i]; i++ ) {
-    
-    for( int j = 0; letters[j]; j++ ) {
-      
-      if( matchW[i] == false && matchL[j] == false && word[i] == letters[j] ) {
-        
+  for ( int i = 0; word[i]; i++ ) {
+
+    for ( int j = 0; letters[j]; j++ ) {
+
+      if ( matchW[i] == false && matchL[j] == false && word[i] == letters[j] ) {
+
         matchW[i] = true;
         matchL[j] = true;
         
@@ -246,14 +246,14 @@ bool matches( char const *word, char const *letters )
   }
   
   // Make sure every value in the word was matched.
-  for( int i = 0; i < len1; i++ ) {
-    if( matchW[i] == false )
+  for ( int i = 0; i < len1; i++ ) {
+    if ( matchW[i] == false )
       return 0;
   }
   
   // Make sure every value in the letters was matched.
-  for( int i = 0; i < len1; i++ ) {
-    if( matchL[i] == false )
+  for ( int i = 0; i < len1; i++ ) {
+    if ( matchL[i] == false )
       return 0;
   }
   
