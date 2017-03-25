@@ -8,9 +8,11 @@
 #include"scene.h"
 
 #define LINE_SIZE 101
-#define ARG_SIZE 21
+#define ARG_BUFFER 50
+#define MAX_ARGS 20
 #define SEMI_CIRCLE 180
 #define SCENE_SIZE 100
+#define THREE 3
 
 //Prototype functions used later in the program.
 void invalidInput( int );
@@ -23,7 +25,7 @@ int main()
   ( scene -> mCap ) = SCENE_SIZE;
 
   int promptCount = 1;
-  char command[100];
+  char command[ARG_BUFFER];
   bool invalidCommand;
 
   while ( true ) {
@@ -42,7 +44,7 @@ int main()
         }
       }
       
-      if ( strlen ( command ) > 20 ) {
+      if ( strlen ( command ) > MAX_ARGS ) {
 
         invalidInput( promptCount );
       }
@@ -57,15 +59,15 @@ int main()
     //USER SELECTS TO LOAD FROM A FILE.
     if ( strcmp ( "load", command ) == 0 ) {
     
-      char line[200];
-      char arg1[50];
-      char arg2[50];
+      char line[LINE_SIZE];
+      char arg1[ARG_BUFFER];
+      char arg2[ARG_BUFFER];
 
-      fgets( line, 100, stdin );
+      fgets( line, LINE_SIZE, stdin );
       sscanf( line, "%s %s", arg1, arg2 );
 
-      if (  strlen( arg1 ) < 1 || strlen( arg2 ) < 1 || 
-            strlen( arg1 ) > 20 || strlen ( arg2 ) > 20 ) {
+      if (  strlen( arg1 ) < 1 || strlen( arg2 ) < 1 ||
+            strlen( arg1 ) > MAX_ARGS || strlen ( arg2 ) > MAX_ARGS ) {
 
         invalidInput( promptCount );
         goto SKIP;
@@ -74,7 +76,7 @@ int main()
       if ( ( scene -> mCount ) >= ( scene -> mCap ) ) {
 
         ( scene -> mCap ) *= 2;
-        ( scene -> mList ) = ( Model ** ) 
+        ( scene -> mList ) = ( Model ** )
                              realloc( ( scene -> mList ), ( scene -> mCap) * sizeof( Model * )  );
       }
       
@@ -109,18 +111,18 @@ int main()
     //USER SELECTS TO SAVE TO A FILE.
     else if ( strcmp( "save", command ) == 0 ) {
 
-      char line[200];
-      char arg[50];
+      char line[LINE_SIZE];
+      char arg[MAX_ARGS];
       Model *current;
       double p1x;
       double p1y;
       double p2x;
       double p2y;
 
-      fgets( line, 100, stdin );
+      fgets( line, LINE_SIZE, stdin );
       sscanf( line, "%20s", arg );
       
-      if ( strlen( arg ) < 1 || strlen (arg) > 20 ) {
+      if ( strlen( arg ) < 1 || strlen (arg) > MAX_ARGS ) {
 
         invalidInput( promptCount );
         goto SKIP;
@@ -156,15 +158,15 @@ int main()
     //USER SELECTS TO DELETE A MODEL.
     else if ( strcmp( "delete", command ) == 0 ) {
 
-      char line[200];
-      char arg[50];
+      char line[LINE_SIZE];
+      char arg[MAX_ARGS];
       bool found = false;
       int i = 0;
 
-      fgets( line, 100, stdin );
+      fgets( line, LINE_SIZE, stdin );
       sscanf( line, "%20s", arg );
       
-      if ( strlen( arg ) < 1 || strlen (arg) > 20 ) {
+      if ( strlen( arg ) < 1 || strlen (arg) > MAX_ARGS ) {
 
         invalidInput( promptCount );
         goto SKIP;
@@ -212,19 +214,19 @@ int main()
     //USER SELEECTS TO TRANSLATE A MODEL.
     else if ( strcmp( "translate", command ) == 0 ) {
 
-      char line[101];
-      char arg[22];
-      double changeX = 0.0;
-      double changeY = 0.0;
+      char line[LINE_SIZE];
+      char arg[MAX_ARGS];
+      double changeX;
+      double changeY;
       bool found = false;
 
-      fgets( line, 100, stdin );
-      if ( sscanf( line, "%20s %lf %lf", arg, &changeX, &changeY ) != 3 ) {
+      fgets( line, LINE_SIZE, stdin );
+      if ( sscanf( line, "%20s %lf %lf", arg, &changeX, &changeY ) != THREE ) {
 
         invalidInput( promptCount );
       }
       
-      if ( strlen( arg ) < 1 || strlen (arg) > 20 ) {
+      if ( strlen( arg ) < 1 || strlen (arg) > LINE_SIZE ) {
 
         invalidInput( promptCount );
         goto SKIP;
@@ -256,12 +258,12 @@ int main()
     //USER SELECTS TO SCALE A MODEL. (PROBLEM WITH >20 CHECK.)
     else if ( strcmp( "scale", command ) == 0 ) {
 
-      char line[101];
-      char arg[22];
-      double factor = 0.0;
+      char line[LINE_SIZE];
+      char arg[MAX_ARGS];
+      double factor;
       bool found = false;
 
-      fgets( line, 100, stdin );
+      fgets( line, LINE_SIZE, stdin );
       if ( sscanf( line, "%20s %lf", arg, &factor ) != 2 ) {
 
         invalidInput( promptCount );
@@ -293,10 +295,10 @@ int main()
     //USER SELECTS TO ROTATE A MODEL.
     else if ( strcmp( "rotate", command ) == 0 ) {
 
-      char line[101];
-      char arg[22];
-      double degree = 0.0;
-      double rad = 0.0;
+      char line[LINE_SIZE];
+      char arg[MAX_ARGS];
+      double degree;
+      double rad;
       bool found = false;
       
       double oldX;
@@ -304,13 +306,13 @@ int main()
       double newX;
       double newY;
 
-      fgets( line, 100, stdin );
+      fgets( line, LINE_SIZE, stdin );
       if ( sscanf( line, "%20s %lf", arg, &degree ) != 2 ) {
 
         invalidInput( promptCount );
       }
       
-      if ( strlen( arg ) < 1 || strlen (arg) > 20 ) {
+      if ( strlen( arg ) < 1 || strlen (arg) > MAX_ARGS ) {
 
         invalidInput( promptCount );
         goto SKIP;
@@ -356,8 +358,8 @@ int main()
     
     else {
 
-      char line[101];
-      fgets( line, 100, stdin );
+      char line[LINE_SIZE];
+      fgets( line, LINE_SIZE, stdin );
       invalidInput( promptCount );
     }
     
