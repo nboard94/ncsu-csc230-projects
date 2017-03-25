@@ -22,6 +22,7 @@ Scene *makeScene();
 
 void freeScene ( Scene *s );
 
-bool applyToScene( Scene *s, char const *name, void (*f)( double pt[ 2 ], double a, double b ), double a, double b );
+bool applyToScene( Scene *s, char const *name,
+void (*f)( double pt[ 2 ], double a, double b ), double a, double b );
 
 void sortModels ( Scene *s );

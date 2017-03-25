@@ -4,9 +4,12 @@
 #include<string.h>
 #include"model.h"
 
+#define INIT_CAP 10
+#define PROPER_SCAN 4
+
 Model *loadModel( char const *fname )
 {
-  int capacity = 10;
+  int capacity = INIT_CAP;
   
   Model *newModel = ( Model * )( malloc ( sizeof( Model ) ) );
   ( newModel -> pList ) = ( double(*)[2] )( malloc( 2 * capacity * sizeof( double * ) ) );
@@ -14,23 +17,24 @@ Model *loadModel( char const *fname )
   
   FILE *mounted = fopen( fname, "r" );
   
-  if( mounted == NULL ) {
-    
+  if ( mounted == NULL ) {
+
     return NULL;
   }
   
   else {
+
+    double p1x;
+    double p1y;
+    double p2x;
+    double p2y;
     
-    double p1x = 0.0;  
-    double p1y = 0.0; 
-    double p2x = 0.0;
-    double p2y = 0.0;
-    
-    while ( fscanf( mounted, "%lf %lf %lf %lf", &p1x, &p1y, &p2x, &p2y ) == 4 ) {
-      
+    while ( fscanf( mounted, "%lf %lf %lf %lf", &p1x, &p1y, &p2x, &p2y ) == PROPER_SCAN ) {
+
       if ( ( newModel -> pCount) >= capacity ) {
         capacity *= 2;
-        ( newModel -> pList ) = (double(*)[2]) realloc( (newModel -> pList), 2 * capacity * sizeof( double * ) );
+        ( newModel -> pList ) = (double(*)[2])
+                                realloc( (newModel -> pList), 2 * capacity * sizeof( double * ) );
       }
       
       ( newModel -> pList )[ ( newModel -> pCount ) ][0] = p1x;
@@ -55,5 +59,5 @@ void freeModel ( Model *m )
 
 void applyToModel( Model *m, void (*f)( double pt[ 2 ], double a, double b ), double a, double b )
 {
-  
+
 }
