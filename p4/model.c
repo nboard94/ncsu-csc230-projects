@@ -1,12 +1,28 @@
+/** 
+    @file model.c
+    @author Nick Board (ndboard)
+
+    This program creates models as requested, frees them,
+    and passes on transformations.
+*/
+
 #include<stdio.h>
 #include<stdlib.h>
 #include<stdbool.h>
 #include<string.h>
 #include"model.h"
 
+/** Initial capacity for a point list. */
 #define INIT_CAP 10
-#define PROPER_SCAN 4
 
+/** The number four. */
+#define FOUR 4
+
+/** 
+    Creates a model by reading from the given filename.
+    
+    @param fname Name of the file to read a model from.
+*/
 Model *loadModel( char const *fname )
 {
   int capacity = INIT_CAP;
@@ -29,7 +45,7 @@ Model *loadModel( char const *fname )
     double p2x;
     double p2y;
     
-    while ( fscanf( mounted, "%lf %lf %lf %lf", &p1x, &p1y, &p2x, &p2y ) == PROPER_SCAN ) {
+    while ( fscanf( mounted, "%lf %lf %lf %lf", &p1x, &p1y, &p2x, &p2y ) == FOUR ) {
 
       if ( ( newModel -> pCount) >= capacity ) {
         capacity *= 2;
@@ -51,12 +67,25 @@ Model *loadModel( char const *fname )
   return newModel;
 }
 
+/**
+    Frees a model's allocated space.
+    
+    @param m The model pointer to free.
+*/
 void freeModel ( Model *m )
 {
   free( m -> pList );
   free( m );
 }
 
+/**
+  Applies a transformation to a model.
+  
+  @param m The model pointer to apply the transformation at.
+  @param f The function pointer that applies that transformation.
+  @param a Used in the transformation.
+  @param b Used in the transformation.
+*/
 void applyToModel( Model *m, void (*f)( double pt[ 2 ], double a, double b ), double a, double b )
 {
 

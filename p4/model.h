@@ -1,3 +1,11 @@
+/** 
+    @file model.h
+    @author Nick Board (ndboard)
+
+    This head contains the functions in model.c and
+    the model struct used throughout.
+*/
+
 #ifndef _MODEL_H_
 #define _MODEL_H_
 
@@ -24,8 +32,26 @@ typedef struct {
 
 #endif
 
+/** 
+    Creates a model by reading from the given filename.
+    
+    @param fname Name of the file to read a model from.
+*/
 Model *loadModel( char const *fname );
 
+/**
+    Frees a model's allocated space.
+    
+    @param m The model pointer to free.
+*/
 void freeModel ( Model *m );
 
+/**
+  Applies a transformation to a model.
+  
+  @param m The model pointer to apply the transformation at.
+  @param f The function pointer that applies that transformation.
+  @param a Used in the transformation.
+  @param b Used in the transformation.
+*/
 void applyToModel( Model *m, void (*f)( double pt[ 2 ], double a, double b ), double a, double b );

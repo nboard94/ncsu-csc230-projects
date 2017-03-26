@@ -1,3 +1,11 @@
+/** 
+    @file drawing.c
+    @author Nick Board (ndboard)
+
+    This program allows the user to manipulate models from text
+    files and saves the output in a form that gnuplot can use.
+*/
+
 #include<stdio.h>
 #include<stdlib.h>
 #include<stdbool.h>
@@ -7,18 +15,34 @@
 #include"model.h"
 #include"scene.h"
 
+/** The max size for a line buffer. */
 #define LINE_SIZE 101
+
+/** The max size for an arg buffer. */
 #define ARG_BUFFER 50
+
+/** The maz size for an appropriate arg or command. */
 #define MAX_ARGS 20
+
+/** 180 degrees used converting from degrees to rads. */
 #define SEMI_CIRCLE 180
+
+/** Default size for number of models in a scene. */
 #define SCENE_SIZE 100
+
+/** The number three. */
 #define THREE 3
 
 //Prototype functions used later in the program.
 void invalidInput( int );
 void containsEOF( char* );
 
-//Main function, where the program begins execution.
+/** 
+    Where the program begins.  Prompts the user for input and then
+    deals with the user input.
+  
+    @return program exit status
+ */
 int main()
 {
   Scene *scene = makeScene();
@@ -46,6 +70,7 @@ int main()
       
       if ( strlen ( command ) > MAX_ARGS ) {
 
+        while( getchar() != ' ' );
         invalidInput( promptCount );
       }
       else {
@@ -62,6 +87,7 @@ int main()
       char line[LINE_SIZE];
       char arg1[ARG_BUFFER];
       char arg2[ARG_BUFFER];
+      bool doop = false;
 
       fgets( line, LINE_SIZE, stdin );
       sscanf( line, "%s %s", arg1, arg2 );
@@ -88,22 +114,26 @@ int main()
 
           //printf( "name: %s, model: %s, i:%d\n ", arg1,  ( scene -> mList )[i] -> name , i );
           invalidInput( promptCount );
+          doop = true;
         }
       }
       
-      if ( newModel == NULL ) {
+      if ( !doop ) {
+        if ( newModel == NULL ) {
 
-        fprintf( stderr, "Can't open file: %s\n", arg2 );
-      }
-      else {
+          fprintf( stderr, "Can't open file: %s\n", arg2 );
+        }
+        else {
 
-        strcpy( newModel->name, arg1 );
-        strcpy( newModel->fname, arg2 );
-        
-        ( scene->mList[ ( scene -> mCount ) ] ) = newModel;
-        ( scene->mCount )++;
+          strcpy( newModel->name, arg1 );
+          strcpy( newModel->fname, arg2 );
+          
+          ( scene->mList[ ( scene -> mCount ) ] ) = newModel;
+          ( scene->mCount )++;
+        }
       }
       
+      doop = false;
       arg1[0] = '\0';
       arg2[0] = '\0';
     }
@@ -369,8 +399,12 @@ int main()
   return 0;
 }
 
-//Checks if a string contains an EOF character.
-//Returns 1 if yes, returns 0 if no.
+/** 
+    Checks a string for the EOF character.
+    Exits if it is detected.
+    
+    @param str The string to check.
+ */
 void containsEOF( char *str ) {
 
   for (int i = 0; str[i]; i++ ) {
@@ -383,7 +417,12 @@ void containsEOF( char *str ) {
 
 }
 
-//Prints an error message to standard error when there is invalid input.
+/** 
+    Used to print the invalid input indication to
+    the commandline using the current prompt number.
+    
+    @param promptCount The current command's number.
+ */
 void invalidInput( int promptCount ) {
 
   fprintf( stderr, "Command %d invalid\n", promptCount );

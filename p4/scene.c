@@ -1,3 +1,11 @@
+/** 
+    @file scene.c
+    @author Nick Board (ndboard)
+
+    This program creates scenes as requested, frees them,
+    and passes on transformations.
+*/
+
 #include<stdio.h>
 #include<stdlib.h>
 #include<stdbool.h>
@@ -5,9 +13,12 @@
 #include"model.h"
 #include"scene.h"
 
+/** The initial capacity of a scene's model list. */
 #define SCENE_CAPACITY 100;
 
-//Creates a scene and sets its fields.
+/**
+  Creates a scene, putting space aside for the model list.
+*/
 Scene *makeScene()
 {
   //Create a Scene* to a block of dynamically allocated memory of size Scene.
@@ -25,6 +36,11 @@ Scene *makeScene()
   return newScene;
 }
 
+/**
+  Frees a scene's allocated space.
+  
+  @param s The scene pointer to free.
+*/
 void freeScene ( Scene *s )
 {
   //Go through list of models, freeing each
@@ -40,6 +56,14 @@ void freeScene ( Scene *s )
   free( s );
 }
 
+/**
+    Applies a transformation to a given scene.
+    
+    @param s The scene pointer to apply the transformation to.
+    @param name The name of the model to apply the transformation to.
+    
+    @return true or false if the transformation was applied.
+*/
 bool applyToScene( Scene *s, char const *name,
 void (*f)( double pt[ 2 ], double a, double b ), double a, double b )
 {
@@ -47,6 +71,11 @@ void (*f)( double pt[ 2 ], double a, double b ), double a, double b )
   return false;
 }
 
+/**
+  Sorts the models contained in a scene's mList.
+  
+  @param s The scene to sort the models in.
+*/
 void sortModels( Scene *s )
 {
 
