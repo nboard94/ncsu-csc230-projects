@@ -1,4 +1,4 @@
-/** 
+/**
     @file model.h
     @author Nick Board (ndboard)
 
@@ -32,7 +32,7 @@ typedef struct {
 
 #endif
 
-/** 
+/**
     Creates a model by reading from the given filename.
     
     @param fname Name of the file to read a model from.

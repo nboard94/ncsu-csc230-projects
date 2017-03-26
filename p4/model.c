@@ -1,4 +1,4 @@
-/** 
+/**
     @file model.c
     @author Nick Board (ndboard)
 
@@ -18,7 +18,7 @@
 /** The number four. */
 #define FOUR 4
 
-/** 
+/**
     Creates a model by reading from the given filename.
     
     @param fname Name of the file to read a model from.
@@ -32,7 +32,7 @@ Model *loadModel( char const *fname )
   ( newModel -> pCount ) = 0;
   
   FILE *mounted = fopen( fname, "r" );
-  
+
   if ( mounted == NULL ) {
 
     return NULL;

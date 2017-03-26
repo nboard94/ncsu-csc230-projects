@@ -1,4 +1,4 @@
-/** 
+/**
     @file drawing.c
     @author Nick Board (ndboard)
 
@@ -37,10 +37,10 @@
 void invalidInput( int );
 void containsEOF( char* );
 
-/** 
+/**
     Where the program begins.  Prompts the user for input and then
     deals with the user input.
-  
+
     @return program exit status
  */
 int main()
@@ -70,7 +70,7 @@ int main()
       
       if ( strlen ( command ) > MAX_ARGS ) {
 
-        while( getchar() != ' ' );
+        while ( getchar() != ' ' );
         invalidInput( promptCount );
       }
       else {
@@ -399,7 +399,7 @@ int main()
   return 0;
 }
 
-/** 
+/**
     Checks a string for the EOF character.
     Exits if it is detected.
     
@@ -417,7 +417,7 @@ void containsEOF( char *str ) {
 
 }
 
-/** 
+/**
     Used to print the invalid input indication to
     the commandline using the current prompt number.
     
