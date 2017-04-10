@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include "bits.h"
 #include "codes.h"
 
@@ -108,14 +109,70 @@ void flushBits( BitBuffer *buffer, FILE *fp )
 */
 int readBits (BitBuffer *buffer, FILE *fp )
 {
+  
+  // This int will hold the returned code.
+  int code = 0;
+  
+  // This bool will let us know if we've started a code.
+  bool processing = false;
 
-  // Read in an 8 bit value.
-  unsigned char raw;
-  
-  fread(  &raw, sizeof( unsigned char ), 1, fp );
-  
-  for ( int i = 0; i < ONE_BYTE_SIZE; i++ ) {
+  // If I have bits leftover from the last read in the buffer,
+  // need to start the code with this.
+  while( ( buffer -> bcount ) > 0 ) {
+
+    // Grab the high-order bit from the buffer and insert at the end of code.
+    // Shift the buffer over and decrement bcount.
+    code = code | ( ( buffer -> bits ) & 0x80 );
+    ( buffer -> bits ) == ( buffer -> bits ) << 1;
+    ( buffer -> bcount )--;
+
+    // Check to see if we've found a 1 and a code has started, if so turn our bool on.
+    if ( code == 0x1 )
+      processing = true;
+
+    // Check after every insertion to see if a valid end has been read.
+    // If it has, return it.  If not, prepare the code for another bit.
+    if( processing && ( code & 0x3 ) == 0 ) {
+
+      return code;
+    }
+    else
+      code = code << 1;
   }
   
-  return 0;
+  // Now it's time to read from the file, raw will hold a byte read directly from the file.
+  unsigned char raw;
+  fread( &raw, sizeof(unsigned char), 1, fp );
+  
+  for( int i = 0; i < 8; i++ ) {
+    
+    // Grab the high-order bit from raw and insert at the end of the code.
+    code = code | ( raw & 0x80 );
+    
+    // Check to see if we've found a 1 and a code has started, if so turn our bool on.
+    if ( code == 0x1 )
+      processing = true;
+    
+    // Check after every insertion to see if a valid end has been read.
+    // If it has, we need to insert the rest into the buffer and return it.
+    // If not, prepare the code for another bit.
+    if( processing && ( code & 0x3 ) == 0 ) {
+      
+      ( buffer -> bits ) = raw;
+      ( buffer -> bcount ) = 8 - i;
+      return code;
+    }
+    else
+      code = code << 1;
+  }
+  
+  // If we didn't start processing and reach EOF, return -1 to signal the end.
+  if ( !processing && feof( fp ) )
+    return -1;
+  
+  // Otherwise, something is wrong with the input, return -2 to signal that.
+  if ( processing && feof( fp ) )
+    return -2;
+  
+  return code;
 }

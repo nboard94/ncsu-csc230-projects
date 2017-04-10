@@ -30,39 +30,31 @@ int main ( int argc, char *argv[] )
   BitBuffer *buffer = (BitBuffer *)malloc( sizeof( BitBuffer ) );
   //
   
+  int code;
+  char currentChar;
   
   // Loop continuously.
   while ( true ){
 
-    // Read the next valid code, if there is one.
-    int returned = readBits( buffer, inputFile);
-
-    // A code is returned.  Match it with the proper symbol
-    // and write that to the output file.
-    if ( returned >= 0 ) {
-
-        fprintf( outputFile, "%c", codeToSym( returned) );
-    }
+    // Read some bits.
+    code = readBits( buffer, inputFile );
     
-    // EOF is reached under valid conditions.  Free allocated
-    // memory, close files, and return 0;
-    else if ( returned == -1 ) {
-
-      free( buffer );
-      fclose( inputFile );
-      fclose( outputFile );
+    // If code is -1, we reached EOF and it's time to stop.
+    if( code == -1 ) {
+      
       return 0;
     }
-    
-    // EOF is reached under invalid conditions.  Print error message,
-    // free allocated memory, close files, and return 0;
-    else if ( returned == -2 ) {
 
-      fprintf( stderr, "Invalid file\n" );
-      free( buffer );
-      fclose( inputFile );
-      fclose( outputFile );
+    // If code is -2, there is an error with input and we need to stop.
+    if( code == -2 ) {
+      
+      fprintf( stderr, "Invalid input\n");
       return 1;
-    }
+    } 
+    
+    // If we've made it this far, get the character that the code represents,
+    // and print that character to the outputFile.
+    currentChar = codeToSym( code );
+    fprintf( outputFile, "%c", currentChar );
   }
 }
