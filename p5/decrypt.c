@@ -13,21 +13,21 @@
 int main ( int argc, char *argv[] )
 {
 
-	// Check for the correct number of command line arguments.
-	// If there is anything other than three, print the
-	// error message and return 1.
-	if ( argc != NUM_ARGS ) {
+  // Check for the correct number of command line arguments.
+  // If there is anything other than three, print the
+  // error message and return 1.
+  if ( argc != NUM_ARGS ) {
 
-		fprintf( stderr, "usage: decrypt <infile> <outfile>\n" );
-		return 1;
-	}
-	
-	// Open the input file with reading permissions.
-	FILE *inputFile = fopen( argv[1], "rb" );
-	// Open the output file with binary writing permissions.
-	FILE *outputFile = fopen( argv[2], "w" );
+    fprintf( stderr, "usage: decrypt <infile> <outfile>\n" );
+    return 1;
+  }
+  
+  // Open the input file with reading permissions.
+  FILE *inputFile = fopen( argv[1], "rb" );
+  // Open the output file with binary writing permissions.
+  FILE *outputFile = fopen( argv[2], "w" );
   // Declare the BitBuffer used while encrypting.
-	BitBuffer *buffer = (BitBuffer *)malloc( sizeof( BitBuffer ) );
+  BitBuffer *buffer = (BitBuffer *)malloc( sizeof( BitBuffer ) );
   //
   
   

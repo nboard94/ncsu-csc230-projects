@@ -35,4 +35,3 @@
   returns -1.
  */
  int codeToSym( int code );
- 

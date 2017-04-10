@@ -39,7 +39,7 @@ void writeBits( int code, int nbits, BitBuffer *buffer, FILE *fp )
   for ( int i = 0; i < nbits; i++ ) {
 
     // Flush the buffer when it's full.
-    if ( ( buffer -> bcount ) == 8 ) {
+    if ( ( buffer -> bcount ) == ONE_BYTE_SIZE ) {
 
       flushBits( buffer, fp);
     }
@@ -108,7 +108,7 @@ void flushBits( BitBuffer *buffer, FILE *fp )
 */
 int readBits (BitBuffer *buffer, FILE *fp )
 {
-  
+
   // Read in an 8 bit value.
   unsigned char raw;
   
