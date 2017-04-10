@@ -37,7 +37,7 @@ int main ( int argc, char *argv[] )
   // If it points to NULL, print the error message and return 1.
   if ( inputFile == NULL ) {
 
-    fprintf( stderr, "Invalid file\n");
+    perror( argv[1] );
     return 1;
   }
 
