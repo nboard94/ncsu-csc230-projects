@@ -109,7 +109,7 @@ void flushBits( BitBuffer *buffer, FILE *fp )
 */
 int readBits (BitBuffer *buffer, FILE *fp )
 {
-  
+
   //printf( "Initial buffer:\t %x\n", (buffer->bits));
   //printf( "initial bcount:\t %d\n", (buffer->bcount));
   
@@ -121,12 +121,12 @@ int readBits (BitBuffer *buffer, FILE *fp )
 
   // If I have bits leftover from the last read in the buffer,
   // need to start the code with this.
-  while( ( buffer -> bcount ) > 0 ) {
+  while ( ( buffer -> bcount ) > 0 ) {
 
     // Grab the high-order bit from the buffer and insert at the end of code.
     // Shift the buffer over and decrement bcount.
-    code = code | ( ( ( buffer -> bits ) & 0x80 ) >> 15 );
-     
+    code = code | ( ( ( buffer -> bits ) & 0x80 ) >> ( TWO_BYTE_SIZE - 1 ) );
+
     //( buffer -> bits ) = ( buffer -> bits ) << 1;
     //( buffer -> bcount )--;
 
@@ -136,7 +136,7 @@ int readBits (BitBuffer *buffer, FILE *fp )
 
     // Check after every insertion to see if a valid end has been read.
     // If it has, return it.  If not, prepare the code for another bit.
-    if( processing && ( code & 0x3 ) == 0 ) {
+    if ( processing && ( code & 0x3 ) == 0 ) {
 
       return code;
     }
@@ -148,28 +148,28 @@ int readBits (BitBuffer *buffer, FILE *fp )
   unsigned char raw;
   fread( &raw, sizeof(unsigned char), 1, fp );
   
-  for( int i = 0; i < 8; i++ ) {
-    
+  for ( int i = 0; i < ONE_BYTE_SIZE; i++ ) {
+
     //printf( "CODE:\t %x\n", code);
     //printf( "RAW:\t %d\n", raw);
     
     // Grab the high-order bit from raw and insert at the end of the code.
-    code = code | ( ( raw & 0x80 ) >> 15 );
+    code = code | ( ( raw & 0x80 ) >> ( TWO_BYTE_SIZE - 1 ) );
     
     // Check to see if we've found a 1 and a code has started, if so turn our bool on.
     if ( code == 0x1 )
       processing = true;
-    
+
     // Check after every insertion to see if a valid end has been read.
     // If it has, we need to insert the rest into the buffer and return it.
     // If not, prepare the code for another bit.
-    if( processing && ( code & 0x3 ) == 0 ) {
-      
+    if ( processing && ( code & 0x3 ) == 0 ) {
+
        // printf( "End buffer:\t %x\n", (buffer->bits));
         //printf( "End bcount:\t %d\n", (buffer->bcount));
-      
+
       ( buffer -> bits ) = raw;
-      ( buffer -> bcount ) = 8 - i;
+      ( buffer -> bcount ) = ONE_BYTE_SIZE - i;
       return code;
     }
     else
@@ -183,10 +183,10 @@ int readBits (BitBuffer *buffer, FILE *fp )
   // If we didn't start processing and reach EOF, return -1 to signal the end.
   if ( !processing && feof( fp ) )
     return -1;
-  
+
   // Otherwise, something is wrong with the input, return -2 to signal that.
   if ( processing && feof( fp ) )
     return -2;
-  
+
   return code;
 }

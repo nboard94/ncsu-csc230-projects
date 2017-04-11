@@ -45,32 +45,30 @@ int main ( int argc, char *argv[] )
   // Loop continuously, readBits will let us know when
   // EOF has been found.
   while ( true ){
-	
+
     // Retrieve a valid code or an EOF flag.
     code = readBits( buffer, inputFile );
     
     // If code is -1, we reached EOF with valid input, return 0;
-    if( code == -1 ) {
-      
+    if ( code == -1 ) {
+
       return 0;
     }
 
     // If code is -2, we reached EOF with invalid input.
     // Print message to standard error and return 1.
-    if( code == -2 ) {
-      
+    if ( code == -2 ) {
+
       fprintf( stderr, "Invalid file\n");
       return 1;
-    } 
+    }
     
     // If there is a positive value in code, we need to find the corresponding
     // character and print it to the output file.
-    if( code > 0 ) {
-      
+    if ( code > 0 ) {
+
       currentChar = codeToSym( code );
       fprintf( outputFile, "%c", currentChar );
-    }   
-	
-	
+    }
   }
 }
