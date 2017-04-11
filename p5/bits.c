@@ -109,57 +109,84 @@ void flushBits( BitBuffer *buffer, FILE *fp )
 */
 int readBits (BitBuffer *buffer, FILE *fp )
 {
-    // If there is any code left in the buffer, that needs to be retrieved.
-    int code = ( buffer -> bits );
-    int currentBitCount = ( buffer -> bits );
-    
-    // Iterate through the maxbits in a code and the size of a byte.
-    while ( currentBitCount <= 20 ) {
-      
-      if ( currentBitCount > 0 ) {
-        
-        // CHECK FOR VALID CODE
-        // check if the first bit is 0
-        //if it is, check if any other bits are 1
-        //if so, this is a bad code
-        if( ( code & 0x8000) == 0 && code > 0 )
-          return -2;
+  
+  //printf( "Initial buffer:\t %x\n", (buffer->bits));
+  //printf( "initial bcount:\t %d\n", (buffer->bcount));
+  
+  // This int will hold the returned code.
+  int code = 0;
+  
+  // This bool will let us know if we've started a code.
+  bool processing = false;
 
-        int bitOne = -1;
-        int bitTwo = -1;
-        int itCount = 0;
-        
-        for( int i = 0; i < sizeof( int ) * 8; i++ ) {
-          
-            bitOne = bitTwo;
-            bitTwo = code & ~( 0x01 << i );
-            
-            if( bitOne == 0 && bitTwo == 0 ) {
-              // get the valid part of the code by making a mask to get the bits up to counter
-              // update buffer with the bits not contained within the valid part
-              //return valid;
-            }
-            
-            itCount++;  
-        }
-      }
-    
-      // If we're here, it means that a 00 wasn't found in the code.
-      // Look at the next byte.
-      int next = fgetc( fp );
-      
-      // check if byte is EOF, if it is check if remianing bits in buffer, if so then bad code
-      if ( feof( fp ) && ( buffer -> bcount ) > 0 ) {
-        return -2;
-      }
-        
-      // combine left over bits of the code with the new byte
-      
-      code = /* code combined with new byte */
-      ( buffer -> bcount ) += ONE_BYTE_SIZE;
+  // If I have bits leftover from the last read in the buffer,
+  // need to start the code with this.
+  while( ( buffer -> bcount ) > 0 ) {
+
+    // Grab the high-order bit from the buffer and insert at the end of code.
+    // Shift the buffer over and decrement bcount.
+    code = code | ( ( ( buffer -> bits ) & 0x80 ) >> 15 );
+     
+    //( buffer -> bits ) = ( buffer -> bits ) << 1;
+    //( buffer -> bcount )--;
+
+    // Check to see if we've found a 1 and a code has started, if so turn our bool on.
+    if ( code == 0x1 )
+      processing = true;
+
+    // Check after every insertion to see if a valid end has been read.
+    // If it has, return it.  If not, prepare the code for another bit.
+    if( processing && ( code & 0x3 ) == 0 ) {
+
+      return code;
     }
-
+    else
+      code = code << 1;
+  }
+  
+  // Now it's time to read from the file, raw will hold a byte read directly from the file.
+  unsigned char raw;
+  fread( &raw, sizeof(unsigned char), 1, fp );
+  
+  for( int i = 0; i < 8; i++ ) {
+    
+    //printf( "CODE:\t %x\n", code);
+    //printf( "RAW:\t %d\n", raw);
+    
+    // Grab the high-order bit from raw and insert at the end of the code.
+    code = code | ( ( raw & 0x80 ) >> 15 );
+    
+    // Check to see if we've found a 1 and a code has started, if so turn our bool on.
+    if ( code == 0x1 )
+      processing = true;
+    
+    // Check after every insertion to see if a valid end has been read.
+    // If it has, we need to insert the rest into the buffer and return it.
+    // If not, prepare the code for another bit.
+    if( processing && ( code & 0x3 ) == 0 ) {
+      
+       // printf( "End buffer:\t %x\n", (buffer->bits));
+        //printf( "End bcount:\t %d\n", (buffer->bcount));
+      
+      ( buffer -> bits ) = raw;
+      ( buffer -> bcount ) = 8 - i;
+      return code;
+    }
+    else
+      code = code << 1;
+      raw = raw << 1;
+  }
+  
+  //printf( "End buffer:\t %x\n", (buffer->bits));
+  //printf( "End bcount:\t %d\n", (buffer->bcount));
+  
+  // If we didn't start processing and reach EOF, return -1 to signal the end.
+  if ( !processing && feof( fp ) )
+    return -1;
+  
+  // Otherwise, something is wrong with the input, return -2 to signal that.
+  if ( processing && feof( fp ) )
     return -2;
+  
+  return code;
 }
-
-

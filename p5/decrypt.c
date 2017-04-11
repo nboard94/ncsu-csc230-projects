@@ -28,6 +28,7 @@ int main ( int argc, char *argv[] )
   FILE *outputFile = fopen( argv[2], "w" );
   // Declare the BitBuffer used while encrypting.
   BitBuffer *buffer = (BitBuffer *)malloc( sizeof( BitBuffer ) );
+  ( buffer -> bcount ) = 0;
   // Code retreived from the input file.
   int code;
   // A character looked up using a code.
@@ -44,7 +45,7 @@ int main ( int argc, char *argv[] )
   // Loop continuously, readBits will let us know when
   // EOF has been found.
   while ( true ){
-
+	
     // Retrieve a valid code or an EOF flag.
     code = readBits( buffer, inputFile );
     
@@ -69,5 +70,7 @@ int main ( int argc, char *argv[] )
       currentChar = codeToSym( code );
       fprintf( outputFile, "%c", currentChar );
     }   
+	
+	
   }
 }
