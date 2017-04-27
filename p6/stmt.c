@@ -140,6 +140,8 @@ static void executeAssignment( Stmt *stmt, Context *ctxt )
   
   // Store the result in context.
   setVariable( ctxt, this->vname, this->expr->eval(this->expr, ctxt) );
+  
+  free( this->expr->eval(this->expr, ctxt) );
 }
 
 // Function to free an assignment statement.

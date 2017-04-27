@@ -93,6 +93,8 @@ void setVariable( Context *ctxt, char const *name, char *value )
     ( ctxt -> vlist )[(ctxt -> len)] = *variable;
     ( ctxt -> len )++;
   }
+  
+  free( variable );
 }
 
 // Go through the Context's vlist, freeing each var.
@@ -102,6 +104,7 @@ void freeContext( Context *ctxt )
   //for( int i = 0; i < (ctxt -> len); i++ )
   //free( &( ( ctxt -> vlist )[i] ) );
 
+  free( ctxt->vlist );
   free( ctxt );
 }
 
@@ -264,8 +267,8 @@ static char *evalSum( Expr *expr, Context *ctxt )
 
   // We're done with the values returned by our two subexpressions,
   // We just needed to get them as doubles
-  //free( left );
-  //free( right );
+  free( left );
+  free( right );
 
   // Compute the result, store it in a dynamically allocated string
   // and return it to the caller.
@@ -338,8 +341,8 @@ static char *evalDifference( Expr *expr, Context *ctxt )
 
   // We're done with the values returned by our two subexpressions,
   // We just needed to get them as doubles
-  //free( left );
-  //free( right );
+  free( left );
+  free( right );
 
   // Compute the result, store it in a dynamically allocated string
   // and return it to the caller.
@@ -484,8 +487,8 @@ static char *evalQuotient( Expr *expr, Context *ctxt )
 
   // We're done with the values returned by our two subexpressions,
   // We just needed to get them as doubles
-  //free( left );
-  //free( right );
+  free( left );
+  free( right );
 
   // Compute the result, store it in a dynamically allocated string
   // and return it to the caller.
