@@ -20,7 +20,7 @@ int main( int argc, char *argv[] )
   if ( argc != 2 )
     usage();
   FILE *fp = fopen( argv[ 1 ], "r" );
-  if ( !fp ) {
+  if ( !fp ) { 
     fprintf( stderr, "Can't open file: %s\n", argv[ 1 ] );
     usage();
   }

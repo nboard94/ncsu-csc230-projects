@@ -55,4 +55,23 @@ Stmt *makePrint( Expr *arg );
  */
 Stmt *makeCompound( Stmt **stmtList, int len );
 
+/** Make an assignment statement.
+    @param vname Name of the variable that will be assigned.
+    @param expr The expression the variable will evaluate to.
+    @return a new statement that does something.
+*/
+Stmt *makeAssignment( char const *vname, Expr *expr );
+
+/** Make an if statement.
+    @param cond The condition to evaluate.
+    @param body The statement to execute if cond is true.
+*/
+Stmt *makeIf( Expr *cond, Stmt *body );
+
+/** Make a while statement.
+    @param cond The condition to evaluate.
+    @param body The statement to execute while cond is true.
+*/
+Stmt *makeWhile( Expr *cond, Stmt *body );
+
 #endif

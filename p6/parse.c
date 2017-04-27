@@ -139,8 +139,11 @@ bool parseToken( char *token, FILE *fp )
 */
 static char *expectToken( char *tok, FILE *fp )
 {
-  if ( !parseToken( tok, fp ) )
+  if ( !parseToken( tok, fp ) ) {
+    
+    //printf("tok: %s\n", tok);
     syntaxError();
+  }
   return tok;
 }
 
@@ -152,8 +155,11 @@ static char *expectToken( char *tok, FILE *fp )
 static void requireToken( char const *target, FILE *fp )
 {
   char tok[ MAX_TOKEN + 1 ];
-  if ( strcmp( expectToken( tok, fp ), target ) != 0 )
+  if ( strcmp( expectToken( tok, fp ), target ) != 0 ) {
+    //printf("tok: %s\n", tok);
+    
     syntaxError();
+  }
 }
 
 /** Return true if the given token is a legal number in our language (i.e.
@@ -233,19 +239,37 @@ static Expr *parseTerm( char *tok, FILE *fp )
     strncpy( str, tok + 1, len - 2 );
     str[ len - 2 ] = '\0';
     return makeLiteral( str );
-  } else if ( isNumber( tok ) ) {
+  } 
+  else if ( isNumber( tok ) ) {
     // Create a literal token for anything that looks like a number.
     char *str = (char *) malloc( strlen( tok ) + 1 );
     return makeLiteral( strcpy( str, tok ) );
-  } else
+  } 
+  else if ( isIdentifier( tok ) ) {
+    
+    return makeVar( tok );
+  }
+  else if ( strcmp( tok, "(") == 0 ) {
+    
+    Expr *paren = parseExpr( expectToken( tok, fp ), fp );
+    requireToken( ")", fp );
+    return paren;
+    
+  }  
+  else {
+    
+    //printf("tok: %s\n", tok);
+    
     syntaxError();
-
+  }
+    
   // Not reached.
   return NULL;
 }
 
 Expr *parseExpr( char *tok, FILE *fp )
 {
+  
   // Parse the expression, or just the left-hand operatnd of a longer
   // expression.
   Expr *left = parseTerm( tok, fp );
@@ -256,16 +280,37 @@ Expr *parseExpr( char *tok, FILE *fp )
     // Parse the right-hand operand.
     Expr *right = parseTerm( expectToken( tok, fp ), fp );
 
+    
     // Create the right type of expression, based on what binary
     // operator it is.
     if ( strcmp( op, "+" ) == 0 )
       left = makeSum( left, right );
+    else if ( strcmp( op, "-" ) == 0 )
+      left = makeDifference( left, right );
+    else if ( strcmp( op, "*" ) == 0 )
+      left = makeProduct( left, right );
+    else if ( strcmp( op, "/" ) == 0 )
+      left = makeQuotient( left, right );
+    else if ( strcmp( op, "==" ) == 0 )
+      left = makeEquals( left, right );
+    else if ( strcmp( op, "<" ) == 0 )
+      left = makeLess( left, right );
+    else if ( strcmp( op, "&&" ) == 0 )
+      left = makeAnd( left, right );
+    else if ( strcmp( op, "||" ) == 0 )
+      left = makeOr( left, right );
   }
 
-  // To end an expression, the next token must be ; or )
-  if ( strcmp( op, ";" ) != 0 && strcmp( op, ")" ) != 0 )
+  // if (strcmp( op, ")" ) != 0)
+    // expectToken( ")", fp );
+  
+ // To end an expression, the next token must be ; or )
+  if ( strcmp( op, ";" ) != 0 && strcmp( op, ")" ) != 0 ) {
+    printf("tok: %s\n", tok);
+    
     syntaxError();
-
+  }
+  
   // Code that called us is going to expect to see this token, so we
   // need to put it back on the input.
   ungetc( op[ 0 ], fp );
@@ -274,6 +319,9 @@ Expr *parseExpr( char *tok, FILE *fp )
 
 Stmt *parseStmt( char *tok, FILE *fp )
 {
+  char left[ MAX_TOKEN + 1 ];
+  strcpy( left, tok );
+  
   // Handle compound statements
   if ( strcmp( tok, "{" ) == 0 ) {
     int len = 0;
@@ -298,8 +346,31 @@ Stmt *parseStmt( char *tok, FILE *fp )
     Expr *arg = parseExpr( expectToken( tok, fp ), fp );
     requireToken( ";", fp );
     return makePrint( arg );
-  } else
+  }
+  else if ( strcmp( tok, "if" ) == 0 ) {
+    // 1) require a left parenthesis
+    // 2) parse an expression
+    // 3) require a right parenthesis
+    // 4) parse a statement
+    // 5) make an If Statement and return it
+    
+    Expr *cond = parseExpr( expectToken( tok, fp ), fp );
+    Stmt *body = parseStmt( expectToken( tok, fp ), fp );
+    
+    return makeIf( cond, body );
+  }
+  else if ( isIdentifier( tok ) ) {
+    
+    expectToken( tok, fp ); 
+    parseToken( tok, fp );
+    Expr *expr = parseExpr( tok, fp );
+    requireToken( ";", fp );
+    return makeAssignment( left, expr );
+  }
+  else {
+    //printf("tok: %s\n", tok);
     syntaxError();
+  }
 
   // Never reached.
   return NULL;

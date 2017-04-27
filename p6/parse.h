@@ -22,7 +22,7 @@
 
 /** Read the next token from the given file, a space-delimtied word, a
     double quoted string or closing parentheses, crly brackets or a
-    semi-colon..
+    semi-colon.
     @param tok storage for the token, with room for a string of up to
      MAX_TOKEN characters.
     @param fp file to read tokens from.

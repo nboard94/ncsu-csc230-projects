@@ -94,6 +94,14 @@ struct ExprTag {
  */
 Expr *makeLiteral( char *val );
 
+/** Make a variable expression that evaulates to the name of that variable.
+    This should be a dynamically allocated string that the expression
+    will be responsible for freeing.
+    @param val value this expression evaluates to.
+    @return a new expression that evaluates to a copy of a given value.
+*/
+Expr *makeVar( char const *name );
+
 /** Make an expression that adds up the value of its two sub-expressions.
     This expression object will take ownership of the memory pointed to
     by its two sub-expressions and free them when it is destroyed.
@@ -110,6 +118,54 @@ Expr *makeSum( Expr *leftExpr, Expr *rightExpr );
     @param rightExpr right-hand expression to add.
     @return pointer to a new, dynamically allocated subclass of Expr.
  */
-Expr *makeSub( Expr *leftExpr, Expr *rightExpr );
+Expr *makeDifference( Expr *leftExpr, Expr *rightExpr );
+
+/** Make an expression that finds the product of its two sub-expressions.
+    This expression object will take ownership of the memory pointed to
+    by its two sub-expressions and free them when it is destroyed.
+    @param leftExpr left-hand expression to add.
+    @param rightExpr right-hand expression to add.
+    @return pointer to a new, dynamically allocated subclass of Expr.
+ */
+Expr *makeProduct( Expr *leftExpr, Expr *rightExpr );
+
+/** Make an expression that finds the quotient of its two sub-expressions.
+    This expression object will take ownership of the memory pointed to
+    by its two sub-expressions and free them when it is destroyed.
+    @param leftExpr left-hand expression to add.
+    @param rightExpr right-hand expression to add.
+    @return pointer to a new, dynamically allocated subclass of Expr.
+ */
+Expr *makeQuotient( Expr *leftExpr, Expr *rightExpr );
+
+/** Make an expression that determines a truth-value depending on the
+    truth values of its two sub-expressions.
+    @param leftExpr left-hand expression to judge.
+    @param rightExpr right-hand expression to judge.
+    @return pointer to a new, dynamically allocated subclass of Expr.
+*/
+Expr *makeAnd( Expr *leftExpr, Expr *rightExpr );
+
+/** Make an expression that determines a truth-value depending on the
+    truth values of its two sub-expressions.
+    @param leftExpr left-hand expression to judge.
+    @param rightExpr right-hand expression to judge.
+    @return pointer to a new, dynamically allocated subclass of Expr.
+*/
+Expr *makeOr( Expr *leftExpr, Expr *rightExpr );
+
+/** Make an expression that determines the equality of its two sub-expressions.
+    @param leftExpr left-hand expression to compare
+    @param rightExpr right-hand expression to compare
+    @return pointer to a new, dynamically allocated subclass of Expr.
+*/
+Expr *makeEquals( Expr *leftExpr, Expr *rightExpr );
+
+/** Make an expression that determines which of the two sub-expressions is smaller.
+    @param leftExpr left-hand expression to compare.
+    @param rightExpr right-hand expression to compare.
+    @return pointer to a new, dynamically allocated subclass of Expr.
+*/
+Expr *makeLess( Expr *leftExpr, Expr *rightExpr );
 
 #endif
