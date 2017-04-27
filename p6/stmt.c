@@ -195,13 +195,13 @@ static void executeIf( Stmt *stmt, Context *ctxt )
   IfStmt *this = (IfStmt *)stmt;
 
   // Evaluate the the truth value of the expression.
-  char *result = (char *) malloc( sizeof(MAX_IDENT_LEN + 1) );
-  result = ( this->cond )->eval( this->cond, ctxt );
+  //char *result = (char *) malloc( sizeof(MAX_IDENT_LEN + 1) );
+  //result = ( this->cond )->eval( this->cond, ctxt );
   
-  if( strcmp( result, "" ) != 0 )
+  if( strcmp( ( this->cond )->eval( this->cond, ctxt ), "" ) != 0 )
     this->execute( this->body, ctxt );
   
-  free( result );
+  //free( result );
 }
 
 // Function to free an if statement.
@@ -211,13 +211,16 @@ static void destroyIf( Stmt *stmt )
   IfStmt *this = (IfStmt *)stmt;
 
   // Free the condition and body, and then the if itself.
-  free( this->cond );
-  free( this->body );
+  this->cond->destroy( this->cond );
+  
+  this->body->destroy( this->body );
   free( this );
 }
 
 Stmt *makeIf( Expr *cond, Stmt *body )
 {
+  
+  
   // Allocate space for the IfStmt object
   IfStmt *this = (IfStmt *) malloc( sizeof( IfStmt ) );
 

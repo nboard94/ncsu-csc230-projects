@@ -139,11 +139,10 @@ bool parseToken( char *token, FILE *fp )
 */
 static char *expectToken( char *tok, FILE *fp )
 {
-  if ( !parseToken( tok, fp ) ) {
-    
-    //printf("tok: %s\n", tok);
+  
+  if ( !parseToken( tok, fp ) )
     syntaxError();
-  }
+  
   return tok;
 }
 
@@ -230,10 +229,13 @@ static bool isBinaryOperator( char const *tok )
 */
 static Expr *parseTerm( char *tok, FILE *fp )
 {
+  
   // Create a literal token for a quoted string, without the quotes.
   if ( tok[ 0 ] == '"' ) {
     // Same as above, make a dynamically allocated copy of the string inside
     // the quotes and make a new literal expression containing it.
+    //printf("termtoken: %s\n", tok);
+    
     int len = strlen( tok );
     char *str = (char *) malloc( len - 1 );
     strncpy( str, tok + 1, len - 2 );
@@ -280,7 +282,7 @@ Expr *parseExpr( char *tok, FILE *fp )
     // Parse the right-hand operand.
     Expr *right = parseTerm( expectToken( tok, fp ), fp );
 
-    
+    //printf("tok: %s, op: %s\n ", tok, op);    
     // Create the right type of expression, based on what binary
     // operator it is.
     if ( strcmp( op, "+" ) == 0 )
@@ -300,13 +302,11 @@ Expr *parseExpr( char *tok, FILE *fp )
     else if ( strcmp( op, "||" ) == 0 )
       left = makeOr( left, right );
   }
-
-  // if (strcmp( op, ")" ) != 0)
-    // expectToken( ")", fp );
   
+ //printf("tok:3 %s, op: %s\n ", tok, op);
  // To end an expression, the next token must be ; or )
   if ( strcmp( op, ";" ) != 0 && strcmp( op, ")" ) != 0 ) {
-    printf("tok: %s\n", tok);
+    //printf("tok: %s, op: %s\n ", tok, op);
     
     syntaxError();
   }
@@ -321,6 +321,8 @@ Stmt *parseStmt( char *tok, FILE *fp )
 {
   char left[ MAX_TOKEN + 1 ];
   strcpy( left, tok );
+  
+  
   
   // Handle compound statements
   if ( strcmp( tok, "{" ) == 0 ) {
@@ -341,6 +343,7 @@ Stmt *parseStmt( char *tok, FILE *fp )
   }
 
   // Figure out what type of statement this is based on the next token.
+  //printf("tok: %s\n", tok);
   if ( strcmp( tok, "print" ) == 0 ) {
     // Parse the one argument to print, and create a print expression.
     Expr *arg = parseExpr( expectToken( tok, fp ), fp );
@@ -354,10 +357,17 @@ Stmt *parseStmt( char *tok, FILE *fp )
     // 4) parse a statement
     // 5) make an If Statement and return it
     
+    requireToken( "(", fp );
     Expr *cond = parseExpr( expectToken( tok, fp ), fp );
+    requireToken( ")", fp );
     Stmt *body = parseStmt( expectToken( tok, fp ), fp );
+    //expectToken( tok, fp );
     
     return makeIf( cond, body );
+  }
+  else if ( strcmp( tok, "while") == 0 ) {
+    
+    
   }
   else if ( isIdentifier( tok ) ) {
     
