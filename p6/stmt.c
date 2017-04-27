@@ -212,7 +212,6 @@ static void destroyIf( Stmt *stmt )
 
   // Free the condition and body, and then the if itself.
   this->cond->destroy( this->cond );
-  
   this->body->destroy( this->body );
   free( this );
 }
@@ -259,7 +258,7 @@ static void executeWhile( Stmt *stmt, Context *ctxt )
   // Evaluate the the truth value of the expression.
   char *result = (char *) malloc( sizeof(MAX_IDENT_LEN + 1) );
   
-  while ( strcmp( result, "" ) != 1 ) {
+  while ( strcmp( result, "" ) != 0 ) {
 
     result = ( this->cond )->eval( this->cond, ctxt );
     this->execute( this->body, ctxt );
@@ -275,8 +274,8 @@ static void destroyWhile( Stmt *stmt )
   WhileStmt *this = (WhileStmt *)stmt;
 
   // Free the condition and body, and then the while itself.
-  free( this->cond );
-  free( this->body );
+  this->cond->destroy( this->cond );
+  this->body->destroy( this->body );
   free( this );
 }
 

@@ -382,8 +382,8 @@ static void destroyProduct( Expr *expr )
   ProductExpr *this = (ProductExpr *)expr;
 
   // Free our operand subexpressions.
-  //this->leftExpr->destroy( this->leftExpr );
-  //this->rightExpr->destroy( this->rightExpr );
+  this->leftExpr->destroy( this->leftExpr );
+  this->rightExpr->destroy( this->rightExpr );
 
   // Then the struct itself.
   free( this );
