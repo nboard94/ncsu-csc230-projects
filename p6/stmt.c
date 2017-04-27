@@ -258,7 +258,6 @@ static void executeWhile( Stmt *stmt, Context *ctxt )
   // Evaluate the the truth value of the expression.
   //char *result = (char *) malloc( sizeof(MAX_IDENT_LEN + 1) );
   
-  
   while ( strcmp( ( this->cond )->eval( this->cond, ctxt ), "" ) != 0 ) {
 
     this->body->execute( this->body, ctxt );
