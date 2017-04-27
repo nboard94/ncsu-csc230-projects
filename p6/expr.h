@@ -42,7 +42,7 @@ Context *makeContext();
 char const *getVariable( Context *ctxt, char const *name );
 
 /** In the given context, set the named variable to store the given
-    value.  
+    value.
 
     Finish commenting this function based on how your context works.
 

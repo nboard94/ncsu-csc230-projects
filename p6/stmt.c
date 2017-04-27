@@ -154,7 +154,7 @@ static void destroyAssignment( Stmt *stmt )
 
 Stmt *makeAssignment( char const *vname, Expr *expr )
 {
-  
+
   // Allocate space for the AssignmentStmt object
   AssignmentStmt *this = (AssignmentStmt *) malloc( sizeof( AssignmentStmt ) );
 
@@ -198,9 +198,9 @@ static void executeIf( Stmt *stmt, Context *ctxt )
   //char *result = (char *) malloc( sizeof(MAX_IDENT_LEN + 1) );
   //result = ( this->cond )->eval( this->cond, ctxt );
   
-  if( strcmp( ( this->cond )->eval( this->cond, ctxt ), "" ) != 0 )
+  if ( strcmp( ( this->cond )->eval( this->cond, ctxt ), "" ) != 0 )
     this->execute( this->body, ctxt );
-  
+
   //free( result );
 }
 
@@ -219,7 +219,7 @@ static void destroyIf( Stmt *stmt )
 
 Stmt *makeIf( Expr *cond, Stmt *body )
 {
-  
+
   
   // Allocate space for the IfStmt object
   IfStmt *this = (IfStmt *) malloc( sizeof( IfStmt ) );
@@ -260,8 +260,8 @@ static void executeWhile( Stmt *stmt, Context *ctxt )
   // Evaluate the the truth value of the expression.
   char *result = (char *) malloc( sizeof(MAX_IDENT_LEN + 1) );
   
-  while( strcmp( result, "" ) != 1 ) {
-    
+  while ( strcmp( result, "" ) != 1 ) {
+
     result = ( this->cond )->eval( this->cond, ctxt );
     this->execute( this->body, ctxt );
   }
@@ -287,7 +287,7 @@ Stmt *makeWhile( Expr *cond, Stmt *body )
   WhileStmt *this = (WhileStmt *) malloc( sizeof( WhileStmt ) );
 
   // Remember our virutal functions.
-  this->execute = executeWhile; 
+  this->execute = executeWhile;
   this->destroy = destroyWhile;
 
   // Remember the condition and body.

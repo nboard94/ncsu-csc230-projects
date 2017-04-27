@@ -28,13 +28,13 @@ bool parseToken( char *token, FILE *fp )
   while ( isspace( ch = fgetc( fp ) ) || ch == '#' ) {
     // If we hit the comment characer, skip the whole line.
     if ( ch == '#' )
-      while ( ( ch = fgetc( fp ) ) != EOF && ch != '\n' )
-        ;
+      while ( ( ch = fgetc( fp ) ) != EOF && ch != '\n' );
+
 
     if ( ch == '\n' )
       lineCount++;
   }
-    
+
   if ( ch == EOF )
     return false;
 
@@ -85,7 +85,7 @@ bool parseToken( char *token, FILE *fp )
                lineCount, ch == EOF ? "EOF" : "newline" );
       exit( EXIT_FAILURE );
     }
-      
+
     // On a backslash, we just enable escape mode.
     if ( !escape && ch == '\\' ) {
       escape = true;
@@ -121,7 +121,7 @@ bool parseToken( char *token, FILE *fp )
       token[ len++ ] = ch;
     }
   }
-    
+
   // Store the closing quote and the terminator and return.
   token[ len++ ] = '"';
   token[ len++ ] = '\0';
@@ -142,7 +142,7 @@ static char *expectToken( char *tok, FILE *fp )
   
   if ( !parseToken( tok, fp ) )
     syntaxError();
-  
+
   return tok;
 }
 
@@ -229,7 +229,7 @@ static bool isBinaryOperator( char const *tok )
 */
 static Expr *parseTerm( char *tok, FILE *fp )
 {
-  
+
   // Create a literal token for a quoted string, without the quotes.
   if ( tok[ 0 ] == '"' ) {
     // Same as above, make a dynamically allocated copy of the string inside
@@ -241,37 +241,37 @@ static Expr *parseTerm( char *tok, FILE *fp )
     strncpy( str, tok + 1, len - 2 );
     str[ len - 2 ] = '\0';
     return makeLiteral( str );
-  } 
+  }
   else if ( isNumber( tok ) ) {
     // Create a literal token for anything that looks like a number.
     char *str = (char *) malloc( strlen( tok ) + 1 );
     return makeLiteral( strcpy( str, tok ) );
-  } 
+  }
   else if ( isIdentifier( tok ) ) {
-    
+
     return makeVar( tok );
   }
   else if ( strcmp( tok, "(") == 0 ) {
-    
+
     Expr *paren = parseExpr( expectToken( tok, fp ), fp );
     requireToken( ")", fp );
     return paren;
     
-  }  
+  }
   else {
-    
+
     //printf("tok: %s\n", tok);
     
     syntaxError();
   }
-    
+
   // Not reached.
   return NULL;
 }
 
 Expr *parseExpr( char *tok, FILE *fp )
 {
-  
+
   // Parse the expression, or just the left-hand operatnd of a longer
   // expression.
   Expr *left = parseTerm( tok, fp );
@@ -282,7 +282,7 @@ Expr *parseExpr( char *tok, FILE *fp )
     // Parse the right-hand operand.
     Expr *right = parseTerm( expectToken( tok, fp ), fp );
 
-    //printf("tok: %s, op: %s\n ", tok, op);    
+    //printf("tok: %s, op: %s\n ", tok, op);
     // Create the right type of expression, based on what binary
     // operator it is.
     if ( strcmp( op, "+" ) == 0 )
@@ -323,7 +323,7 @@ Stmt *parseStmt( char *tok, FILE *fp )
   strcpy( left, tok );
   
   
-  
+
   // Handle compound statements
   if ( strcmp( tok, "{" ) == 0 ) {
     int len = 0;
@@ -366,12 +366,12 @@ Stmt *parseStmt( char *tok, FILE *fp )
     return makeIf( cond, body );
   }
   else if ( strcmp( tok, "while") == 0 ) {
-    
+
     
   }
   else if ( isIdentifier( tok ) ) {
-    
-    expectToken( tok, fp ); 
+
+    expectToken( tok, fp );
     parseToken( tok, fp );
     Expr *expr = parseExpr( tok, fp );
     requireToken( ";", fp );

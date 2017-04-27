@@ -42,11 +42,11 @@ Context *makeContext()
 // returning the value of the variable when found.  Otherwise null.
 char const *getVariable( Context *ctxt, char const *name )
 {
-  
-  for( int i = 0; i < (ctxt -> len); i++ ) {
-	  
-    if( strcmp( name, (ctxt->vlist)[i].name ) == 0 ) {
-      
+
+  for ( int i = 0; i < (ctxt -> len); i++ ) {
+    
+    if ( strcmp( name, (ctxt->vlist)[i].name ) == 0 ) {
+
       return (ctxt->vlist)[i].val;
       
     }
@@ -62,34 +62,34 @@ char const *getVariable( Context *ctxt, char const *name )
 void setVariable( Context *ctxt, char const *name, char *value )
 {
   VarRec *variable = (VarRec*)malloc(sizeof(VarRec));
-    
+
   strcpy( ( variable -> name ), name );
   ( variable -> val ) = value;
   
   
   // Reassign a variable if it already exists.
   bool found = 0;
-  for( int i = 0; i < ctxt->len; i++) {
-    
-    if( strcmp( (ctxt->vlist)[i].name, name ) == 0 ) {
-        
+  for ( int i = 0; i < ctxt->len; i++) {
+
+    if ( strcmp( (ctxt->vlist)[i].name, name ) == 0 ) {
+
      (ctxt->vlist[i]).val = variable->val;
      
       //printf("Current: %s\n", (ctxt->vlist[i]).val );
       found = 1;
     }
-      
+
   }
   
-  if( ctxt->len >= ctxt->capacity ) {
-    
+  if ( ctxt->len >= ctxt->capacity ) {
+
     ctxt->capacity *= ctxt->len;
     ctxt->vlist = (VarRec *) realloc( ctxt->vlist, (ctxt->capacity) * sizeof( VarRec ) );
   }
 
   // Otherwise, add a new one.
-  if(!found) {
-    
+  if (!found) {
+
     ( ctxt -> vlist )[(ctxt -> len)] = *variable;
     ( ctxt -> len )++;
   }
@@ -100,8 +100,8 @@ void setVariable( Context *ctxt, char const *name, char *value )
 void freeContext( Context *ctxt )
 {
   //for( int i = 0; i < (ctxt -> len); i++ )
-	  //free( &( ( ctxt -> vlist )[i] ) );
-  
+  //free( &( ( ctxt -> vlist )[i] ) );
+
   free( ctxt );
 }
 
@@ -214,7 +214,7 @@ Expr *makeVar( char const *name )
   // Return the result, as an instance of the base.
   return (Expr *) this;
 }
-  
+
 
 //////////////////////////////////////////////////////////////////////
 // Sum expressions
@@ -492,15 +492,15 @@ static char *evalQuotient( Expr *expr, Context *ctxt )
   char *result = (char *)malloc( MAX_NUMBER + 1 );
   
   // If both a and b are zero, we need to return the "not-a-number" value.
-  if( a == 0 && b == 0 ) {
-    
+  if ( a == 0 && b == 0 ) {
+
     strcpy( result, "not-a-number" );
     return result;
   }
   
   // If b is zero, and a is some other integer, we need to return the "inf" value.
-  if( a != 0 && b == 0 ) {
-    
+  if ( a != 0 && b == 0 ) {
+
     strcpy( result, "inf" );
     return result;
   }
@@ -564,7 +564,7 @@ static char *evalEquals( Expr *expr, Context *ctxt )
   // Compute the result, store it in a dynamically allocated string.
   char *result = (char *)malloc( MAX_NUMBER + 1 );
   
-  if( strcmp( left, right ) == 0 )
+  if ( strcmp( left, right ) == 0 )
       strcpy( result, "t" );
   else
       strcpy( result, "" );
@@ -649,11 +649,11 @@ static char *evalLess( Expr *expr, Context *ctxt )
   
   // If a is less than b, result is the true string.
   // Otherwise, result is the empty string.
-  if( a < b )
+  if ( a < b )
     strcpy( result, "t" );
   else
     strcpy( result, "" );
-  
+
   // Return the result.
   return result;
 }
@@ -713,11 +713,11 @@ static char *evalAnd( Expr *expr, Context *ctxt )
   char *result = (char *)malloc( MAX_NUMBER + 1 );
   
   // Check if they're both not equal to the false empty string.
-  if( strcmp( left, "" ) != 0 && strcmp( right, "" ) != 0 )
+  if ( strcmp( left, "" ) != 0 && strcmp( right, "" ) != 0 )
     strcpy( result, "t" );
   else
     strcpy( result, "" );
-  
+
   // We're done with the values returned by our two subexpressions.
   free( left );
   free( right );
@@ -781,11 +781,11 @@ static char *evalOr( Expr *expr, Context *ctxt )
   char *result = (char *)malloc( MAX_NUMBER + 1 );
   
   // Check if eithe of them are not equal to the false empty string.
-  if( strcmp( left, "" ) != 0 || strcmp( right, "" ) != 0 )
+  if ( strcmp( left, "" ) != 0 || strcmp( right, "" ) != 0 )
     strcpy( result, "t" );
   else
     strcpy( result, "" );
-  
+
   // We're done with the values returned by our two subexpressions.
   free( left );
   free( right );
@@ -808,4 +808,3 @@ Expr *makeOr( Expr *leftExpr, Expr *rightExpr )
   // Return the instance as if it's an Expr (which it sort of is)
   return (Expr *) this;
 }
-
