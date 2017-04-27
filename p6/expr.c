@@ -44,7 +44,7 @@ char const *getVariable( Context *ctxt, char const *name )
 {
 
   for ( int i = 0; i < (ctxt -> len); i++ ) {
-    
+
     if ( strcmp( name, (ctxt->vlist)[i].name ) == 0 ) {
 
       return (ctxt->vlist)[i].val;

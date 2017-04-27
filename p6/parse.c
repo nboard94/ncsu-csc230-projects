@@ -139,7 +139,7 @@ bool parseToken( char *token, FILE *fp )
 */
 static char *expectToken( char *tok, FILE *fp )
 {
-  
+
   if ( !parseToken( tok, fp ) )
     syntaxError();
 
@@ -322,8 +322,6 @@ Stmt *parseStmt( char *tok, FILE *fp )
   char left[ MAX_TOKEN + 1 ];
   strcpy( left, tok );
   
-  
-
   // Handle compound statements
   if ( strcmp( tok, "{" ) == 0 ) {
     int len = 0;
@@ -367,7 +365,7 @@ Stmt *parseStmt( char *tok, FILE *fp )
   }
   else if ( strcmp( tok, "while") == 0 ) {
 
-    
+
   }
   else if ( isIdentifier( tok ) ) {
 

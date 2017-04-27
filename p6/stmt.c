@@ -220,7 +220,6 @@ static void destroyIf( Stmt *stmt )
 Stmt *makeIf( Expr *cond, Stmt *body )
 {
 
-  
   // Allocate space for the IfStmt object
   IfStmt *this = (IfStmt *) malloc( sizeof( IfStmt ) );
 
