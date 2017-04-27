@@ -364,7 +364,12 @@ Stmt *parseStmt( char *tok, FILE *fp )
     return makeIf( cond, body );
   }
   else if ( strcmp( tok, "while") == 0 ) {
-
+    requireToken( "(", fp );
+    Expr *cond = parseExpr( expectToken( tok, fp ), fp );
+    requireToken( ")", fp );
+    Stmt *body = parseStmt( expectToken( tok, fp ), fp );
+    
+    return makeWhile( cond, body );
 
   }
   else if ( isIdentifier( tok ) ) {

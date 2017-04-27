@@ -199,7 +199,7 @@ static void executeIf( Stmt *stmt, Context *ctxt )
   //result = ( this->cond )->eval( this->cond, ctxt );
   
   if ( strcmp( ( this->cond )->eval( this->cond, ctxt ), "" ) != 0 )
-    this->execute( this->body, ctxt );
+    this->body->execute( this->body, ctxt );
 
   //free( result );
 }
@@ -256,15 +256,15 @@ static void executeWhile( Stmt *stmt, Context *ctxt )
   WhileStmt *this = (WhileStmt *)stmt;
 
   // Evaluate the the truth value of the expression.
-  char *result = (char *) malloc( sizeof(MAX_IDENT_LEN + 1) );
+  //char *result = (char *) malloc( sizeof(MAX_IDENT_LEN + 1) );
   
-  while ( strcmp( result, "" ) != 0 ) {
+  
+  while ( strcmp( ( this->cond )->eval( this->cond, ctxt ), "" ) != 0 ) {
 
-    result = ( this->cond )->eval( this->cond, ctxt );
-    this->execute( this->body, ctxt );
+    this->body->execute( this->body, ctxt );
   }
   
-  free( result );
+  //free( result );
 }
 
 // Function to free a while statement.
